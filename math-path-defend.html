@@ -8,20 +8,56 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ������ DARK THEME (default) ��������������������������������������������������������������������������� */
   :root {
-    --bg0: #080b14;
-    --bg1: #0d1120;
-    --bg2: #131826;
-    --bg3: #1a2035;
-    --border: #1e2840;
-    --border2: #2a3555;
-    --acc: #e94560;
-    --acc2: #f5a623;
-    --acc3: #00d4aa;
-    --acc4: #7c6fff;
-    --txt: #c8d0e8;
-    --txt2: #7a869a;
-    --txt3: #4a5468;
+    --bg0: #0d0d0d;
+    --bg1: #141414;
+    --bg2: #1c1c1c;
+    --bg3: #242424;
+    --border:  #2e2e2e;
+    --border2: #3a3a3a;
+    --acc:  #f472b6;
+    --acc2: #facc15;
+    --acc3: #34d399;
+    --acc4: #a78bfa;
+    --txt:  #f0f0f0;
+    --txt2: #999;
+    --txt3: #555;
+    /* num tile */
+    --num-clr: #f0f0f0; --num-bg: #1c1c1c; --num-bdr: #383838;
+    /* op colors */
+    --op-plus-clr:  #4ade80; --op-plus-bg:  #0a1f10; --op-plus-bdr:  #1a5c2a;
+    --op-minus-clr: #f87171; --op-minus-bg: #1f0a0a; --op-minus-bdr: #5c1a1a;
+    --op-mul-clr:   #60a5fa; --op-mul-bg:   #0a1020; --op-mul-bdr:   #1a3a6a;
+    --op-div-clr:   #fb923c; --op-div-bg:   #1f1008; --op-div-bdr:   #6a3010;
+    /* wall */
+    --wall-bg: #111; --wall-clr: #2a2a2a; --wall-bdr: #1e1e1e;
+    /* gameover */
+    --go-bg1: rgba(10,10,10,0.97); --go-bg2: rgba(20,5,15,0.97);
+  }
+
+  /* ������ LIGHT THEME ��������������������������������������������������������������������������������������������������������� */
+  body.light {
+    --bg0: #f5f0ff;
+    --bg1: #ede8f8;
+    --bg2: #e4ddf5;
+    --bg3: #d8d0ee;
+    --border:  #c8beec;
+    --border2: #b0a4e0;
+    --acc:  #db2777;
+    --acc2: #d97706;
+    --acc3: #059669;
+    --acc4: #7c3aed;
+    --txt:  #1a1a2e;
+    --txt2: #4a4468;
+    --txt3: #8878b8;
+    --num-clr: #1a1a2e; --num-bg: #ddd5f8; --num-bdr: #b0a4e0;
+    --op-plus-clr:  #166534; --op-plus-bg:  #d1fae5; --op-plus-bdr:  #6ee7b7;
+    --op-minus-clr: #991b1b; --op-minus-bg: #fee2e2; --op-minus-bdr: #fca5a5;
+    --op-mul-clr:   #1e40af; --op-mul-bg:   #dbeafe; --op-mul-bdr:   #93c5fd;
+    --op-div-clr:   #9a3412; --op-div-bg:   #ffedd5; --op-div-bdr:   #fdba74;
+    --wall-bg: #c8c0e8; --wall-clr: #9888c8; --wall-bdr: #b0a4d8;
+    --go-bg1: rgba(245,240,255,0.97); --go-bg2: rgba(235,220,250,0.97);
   }
 
   html, body {
@@ -229,62 +265,151 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: 20px;
-    font-weight: 700;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    font-size: 22px;
+    font-weight: 900;
     font-family: 'Orbitron', sans-serif;
     cursor: pointer;
-    transition: transform 0.1s, border-color 0.1s, background 0.1s;
-    background: var(--bg2);
+    transition: transform 0.08s cubic-bezier(.34,1.56,.64,1), box-shadow 0.1s, filter 0.1s;
     position: relative;
     user-select: none;
     -webkit-user-select: none;
+    overflow: hidden;
   }
 
-  .tile.num { color: var(--txt); background: var(--bg2); }
-  .tile.op  { color: var(--acc2); background: #1a1508; border-color: #2d2010; font-size: 18px; }
-  .tile.wall { background: #111118; color: #2a2a3a; cursor: default; border-color: #1a1a25; font-size: 12px; }
-  .tile.wall::after { content: '▪'; }
+  /* unified number tiles */
+  .tile.num {
+    color: var(--num-clr);
+    background: var(--num-bg);
+    border-color: var(--num-bdr);
+  }
+
+  /* operator tiles ��� each symbol its own vivid color */
+  .tile.op { border-radius: 50%; font-size: 22px; }
+  .tile.op[data-v="+"] { color: var(--op-plus-clr);  background: var(--op-plus-bg);  border-color: var(--op-plus-bdr); }
+  .tile.op[data-v="-"] { color: var(--op-minus-clr); background: var(--op-minus-bg); border-color: var(--op-minus-bdr); }
+  .tile.op[data-v="횞"] { color: var(--op-mul-clr);   background: var(--op-mul-bg);   border-color: var(--op-mul-bdr); }
+  .tile.op[data-v="첨"] { color: var(--op-div-clr);   background: var(--op-div-bg);   border-color: var(--op-div-bdr); }
+
+  .tile.wall {
+    background: var(--wall-bg);
+    color: var(--wall-clr);
+    cursor: default;
+    border-color: var(--wall-bdr);
+    border-radius: 8px;
+    font-size: 18px;
+  }
+  .tile.wall::after { content: '�쑆'; opacity: 0.35; }
+
+  .tile.num:hover:not(.wrong):not(.clear)  { transform: scale(1.09) translateY(-3px); filter: brightness(1.15); }
+  .tile.op:hover:not(.wrong):not(.clear)   { transform: scale(1.12) rotate(20deg); filter: brightness(1.15); }
 
   .tile.selected {
-    border-color: var(--acc3);
-    background: #082822;
-    transform: scale(1.06);
-    box-shadow: 0 0 0 1px var(--acc3);
+    transform: scale(1.13) translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.2);
+    filter: brightness(1.3) saturate(1.2);
+    z-index: 2;
   }
 
-  .tile.op.selected {
-    border-color: var(--acc2);
-    background: #251a05;
-    box-shadow: 0 0 0 1px var(--acc2);
+  @keyframes squish-pop {
+    0%   { transform: scale(1);        opacity: 1; }
+    12%  { transform: scale(1.3, 0.7); opacity: 1; }
+    30%  { transform: scale(0.8, 1.2); opacity: 1; }
+    50%  { transform: scale(1.15, 0.9);opacity: 1; }
+    70%  { transform: scale(0.9, 1.05);opacity: 0.7; }
+    100% { transform: scale(0.05);     opacity: 0; }
   }
 
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    20%      { transform: translateX(-5px); }
-    60%      { transform: translateX(5px); }
+  @keyframes bounce-in {
+    0%   { transform: scale(0) translateY(14px); opacity: 0; }
+    55%  { transform: scale(1.18) translateY(-5px); opacity: 1; }
+    75%  { transform: scale(0.9) translateY(2px); }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
   }
 
-  @keyframes pop {
-    0%   { transform: scale(1.15); opacity: 1; }
-    100% { transform: scale(0.1); opacity: 0; }
+  @keyframes wrong-shake {
+    0%,100% { transform: translateX(0) rotate(0); }
+    15%     { transform: translateX(-7px) rotate(-4deg); }
+    35%     { transform: translateX(7px) rotate(4deg); }
+    55%     { transform: translateX(-4px) rotate(-2deg); }
+    75%     { transform: translateX(4px) rotate(2deg); }
   }
 
-  @keyframes slideUp {
-    from { transform: translateY(16px); opacity: 0; }
-    to   { transform: translateY(0); opacity: 1; }
+  @keyframes pulse-enemy {
+    0%,100% { box-shadow: 0 0 6px #f4a7c0; }
+    50%      { box-shadow: 0 0 14px #f4a7c0, 0 0 4px #fca5a5; }
   }
 
-  @keyframes pulse {
-    0%,100% { border-color: var(--acc); }
-    50%      { border-color: #ff8888; box-shadow: 0 0 6px rgba(233,69,96,0.4); }
+  @keyframes hint-glow {
+    0%,100% { box-shadow: 0 0 0 2px #c4b5fd; filter: brightness(1.1); }
+    50%      { box-shadow: 0 0 12px 4px #c4b5fd; filter: brightness(1.5); }
   }
 
-  .tile.wrong  { animation: shake 0.3s; border-color: var(--acc); }
-  .tile.clear  { animation: pop 0.28s forwards; }
-  .tile.new    { animation: slideUp 0.3s ease-out; }
-  .tile.enemy  { animation: pulse 1.2s infinite; background: #1a0810; border-color: var(--acc); }
+  .tile.wrong  { animation: wrong-shake 0.42s cubic-bezier(.36,.07,.19,.97); border-color: #f4a7c0 !important; }
+  .tile.clear  { animation: squish-pop 0.42s cubic-bezier(.36,.07,.19,.97) forwards; pointer-events: none; }
+  .tile.new    { animation: bounce-in 0.38s cubic-bezier(.34,1.56,.64,1); }
+  .tile.enemy  { animation: pulse-enemy 1.2s infinite; }
+  .tile.hint   { animation: hint-glow 0.65s ease-in-out 5; border-color: #c4b5fd !important; }
+
+  /* THEME TOGGLE */
+  #btn-theme {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--txt2);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  #btn-theme:hover { border-color: var(--border2); color: var(--txt); }
+
+  /* VOLUME SLIDER */
+  #vol-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+  }
+  #vol-icon { font-size: 14px; cursor: pointer; user-select: none; flex-shrink: 0; }
+  #vol-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--bg3);
+    outline: none;
+    cursor: pointer;
+  }
+  #vol-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--acc4);
+    cursor: pointer;
+    border: 2px solid var(--bg2);
+    transition: transform 0.1s;
+  }
+  #vol-slider::-webkit-slider-thumb:hover { transform: scale(1.25); }
+  #vol-slider::-moz-range-thumb {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--acc4);
+    cursor: pointer;
+    border: 2px solid var(--bg2);
+  }
+  #vol-pct { font-size: 9px; color: var(--txt3); font-family: 'Orbitron', sans-serif; min-width: 28px; text-align: right; }
 
   /* SIDEBAR */
   #sidebar {
@@ -371,7 +496,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(8, 11, 20, 0.96);
+    background: linear-gradient(160deg, var(--go-bg1) 0%, var(--go-bg2) 100%);
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -524,6 +649,60 @@
   }
   .preset-btn:hover { border-color: var(--acc3); color: var(--acc3); }
 
+  /* PAUSE */
+  #btn-pause {
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--txt2);
+    border-radius: 7px;
+    padding: 6px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.15s;
+    width: 100%;
+    margin-top: 2px;
+  }
+  #btn-pause:hover { border-color: var(--acc2); color: var(--acc2); }
+  #btn-pause.paused { border-color: var(--acc2); color: var(--acc2); background: #1a1508; }
+
+  #pause-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,11,20,0.93);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 50;
+  }
+  #pause-overlay.show { display: flex; }
+  #pause-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--acc2);
+    letter-spacing: 6px;
+  }
+  #pause-sub { font-size: 11px; color: var(--txt3); letter-spacing: 3px; }
+  #btn-resume {
+    background: var(--acc2);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: opacity 0.15s, transform 0.1s;
+    margin-top: 8px;
+  }
+  #btn-resume:hover { opacity: 0.88; transform: scale(1.03); }
+
   /* HINT */
   #btn-hint {
     background: transparent;
@@ -573,31 +752,41 @@
   <!-- HEADER -->
   <div id="header">
     <div id="title">MATH PATH<span>DEFEND</span></div>
-    <div class="stats-row">
-      <div class="stat">
-        <div class="stat-label">SCORE</div>
-        <div class="stat-val gold" id="score-val">0</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">WAVE</div>
-        <div class="stat-val" id="wave-val">1</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">HP</div>
-        <div class="stat-val danger" id="hp-val">5</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button id="btn-theme">�윁� �떎�겕</button>
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-label">SCORE</div>
+          <div class="stat-val gold" id="score-val">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">WAVE</div>
+          <div class="stat-val" id="wave-val">1</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">HP</div>
+          <div class="stat-val danger" id="hp-val">5</div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- VOLUME -->
+  <div id="vol-row">
+    <span id="vol-icon" title="�쓬�냼嫄� �넗湲�">�윍�</span>
+    <input type="range" id="vol-slider" min="0" max="100" value="60" step="1">
+    <span id="vol-pct">60%</span>
+  </div>
+
   <!-- SETTINGS -->
   <div id="settings-row">
-    <span id="settings-label">타이머</span>
+    <span id="settings-label">����씠癒�</span>
     <input type="range" id="timer-slider" min="5" max="300" value="15" step="1">
     <div id="timer-input-wrap">
       <input type="number" id="timer-num-input" min="5" value="15">
-      <span id="timer-unit">초</span>
+      <span id="timer-unit">珥�</span>
     </div>
-    <button id="inf-toggle" title="무제한 모드">∞</button>
+    <button id="inf-toggle" title="臾댁젣�븳 紐⑤뱶">�닞</button>
     <button class="preset-btn" data-sec="10">10s</button>
     <button class="preset-btn" data-sec="30">30s</button>
     <button class="preset-btn" data-sec="60">60s</button>
@@ -609,22 +798,22 @@
       <span id="target-tag">TARGET</span>
       <div id="target-num">?</div>
     </div>
-    <div id="target-hint">숫자 → 연산자 → 숫자<br>드래그로 연결하세요</div>
+    <div id="target-hint">�닽�옄 �넂 �뿰�궛�옄 �넂 �닽�옄<br>�뱶�옒洹몃줈 �뿰寃고븯�꽭�슂</div>
   </div>
 
   <!-- TIMER -->
   <div id="timer-wrapper">
     <div id="timer-bar-bg"><div id="timer-bar"></div></div>
     <div id="timer-row">
-      <span id="timer-label">다음 웨이브까지</span>
+      <span id="timer-label">�떎�쓬 �썾�씠釉뚭퉴吏�</span>
       <span id="timer-secs">15</span>
     </div>
   </div>
 
   <!-- EXPRESSION -->
   <div id="expr-bar">
-    <div id="expr-text">타일을 드래그하세요...</div>
-    <div id="expr-result">—</div>
+    <div id="expr-text">����씪�쓣 �뱶�옒洹명븯�꽭�슂...</div>
+    <div id="expr-result">���</div>
   </div>
 
   <!-- MESSAGE -->
@@ -636,7 +825,7 @@
     <div id="sidebar">
       <div class="side-card">
         <div class="sc-label">COMBO</div>
-        <div class="sc-val" id="combo-val">×1</div>
+        <div class="sc-val" id="combo-val">횞1</div>
       </div>
       <div class="side-card" id="wave-card">
         <div class="sc-label">WAVE</div>
@@ -646,12 +835,20 @@
         <div class="sc-label">BEST</div>
         <div class="sc-val" id="best-val" style="font-size:15px">0</div>
       </div>
-      <button id="btn-clear">초기화</button>
-      <button id="btn-hint">힌트 <span id="hint-count">3</span></button>
+      <button id="btn-clear">珥덇린�솕</button>
+      <button id="btn-pause">�뤈 �씪�떆�젙吏�</button>
+      <button id="btn-hint">�엺�듃 <span id="hint-count">3</span></button>
     </div>
   </div>
 
-  <div id="hint">숫자 타일과 연산자 타일을 교대로 연결 · 3개 이상</div>
+  <div id="hint">�닽�옄 ����씪怨� �뿰�궛�옄 ����씪�쓣 援먮��濡� �뿰寃� 쨌 3媛� �씠�긽</div>
+</div>
+
+<!-- PAUSE -->
+<div id="pause-overlay">
+  <div id="pause-title">PAUSED</div>
+  <div id="pause-sub">�씪�떆�젙吏��맖 쨌 �뒪�럹�씠�뒪諛� �삉�뒗 踰꾪듉�쑝濡� �옱媛�</div>
+  <button id="btn-resume">�뼳 �옱媛�</button>
 </div>
 
 <!-- GAME OVER -->
@@ -667,7 +864,7 @@
 
 <script>
 const GRID = 5;
-const OPS = ['+', '-', '×', '÷'];
+const OPS = ['+', '-', '횞', '첨'];
 const NUMS = [1,2,3,4,5,6,7,8,9,2,3,4,5,6];
 
 let grid = [], selected = [], isDragging = false;
@@ -676,6 +873,8 @@ let target = 0;
 let BASE_DUR = 15000;
 let INFINITE_TIMER = false;
 let gameActive = true;
+let isPaused = false;
+let pauseElapsed = 0;
 let msgTimeout = null;
 let hintLeft = 3;
 let hintPath = null;
@@ -750,7 +949,7 @@ function injectSolvable() {
   let a, b;
   if (op === '+') { a = rnd(1, Math.min(target-1, 9)); b = target - a; }
   else if (op === '-') { a = rnd(target+1, target+9); b = a - target; }
-  else if (op === '×') {
+  else if (op === '횞') {
     const divs = []; for (let i=1;i<=9;i++) if (target%i===0) divs.push(i);
     if (!divs.length) return;
     a = divs[rnd(0, divs.length-1)]; b = target / a;
@@ -773,8 +972,8 @@ function evalPath(path) {
     const n  = Number(path[i+1].val);
     if (op === '+') val += n;
     else if (op === '-') val -= n;
-    else if (op === '×') val *= n;
-    else if (op === '÷') { if (n===0 || !Number.isInteger(val/n)) return null; val /= n; }
+    else if (op === '횞') val *= n;
+    else if (op === '첨') { if (n===0 || !Number.isInteger(val/n)) return null; val /= n; }
     else return null;
   }
   return val;
@@ -793,7 +992,8 @@ function renderGrid() {
       const div = document.createElement('div');
       div.className = 'tile ' + t.type;
       div.dataset.r = r; div.dataset.c = c;
-      if (t.type !== 'wall') div.textContent = t.val;
+      if (t.type === 'num') { div.dataset.v = t.val; div.textContent = t.val; }
+      else if (t.type === 'op') { div.dataset.v = t.val; div.textContent = t.val; }
       if (selected.some(s => s.row===r && s.col===c)) div.classList.add('selected');
       if (hintPath && hintPath.some(h => h.row===r && h.col===c)) div.classList.add('hint');
       div.addEventListener('mousedown', e => { e.preventDefault(); startDrag(r, c); });
@@ -858,8 +1058,8 @@ function updateExpr() {
   const txt = document.getElementById('expr-text');
   const res = document.getElementById('expr-result');
   if (!selected.length) {
-    txt.textContent = '타일을 드래그하세요...';
-    res.textContent = '—'; res.style.color = 'var(--txt3)'; return;
+    txt.textContent = '����씪�쓣 �뱶�옒洹명븯�꽭�슂...';
+    res.textContent = '���'; res.style.color = 'var(--txt3)'; return;
   }
   txt.textContent = selected.map(t => t.val).join(' ');
   if (selected.length >= 3 && selected.length % 2 === 1) {
@@ -869,7 +1069,7 @@ function updateExpr() {
       res.textContent = v;
       res.style.color = v === target ? 'var(--acc3)' : 'var(--acc2)';
     }
-  } else { res.textContent = '…'; res.style.color = 'var(--txt3)'; }
+  } else { res.textContent = '���'; res.style.color = 'var(--txt3)'; }
 }
 
 function onSuccess() {
@@ -877,7 +1077,7 @@ function onSuccess() {
   score += pts;
   combo = Math.min(combo + 1, 8);
   hintPath = null;
-  showMsg(`✓ ${target} 완성!  +${pts}점  ×${combo}콤보`, 'var(--acc3)');
+  showMsg(`�쐯 ${target} �셿�꽦!  +${pts}�젏  횞${combo}肄ㅻ낫`, 'var(--acc3)');
   const clearing = [...selected];
   clearing.forEach(t => tileEl(t.row, t.col).classList.add('clear'));
   setTimeout(() => {
@@ -897,7 +1097,7 @@ function onFail() {
     setTimeout(() => el.classList.remove('wrong'), 300);
   });
   combo = 1;
-  showMsg('✗ 다시 시도!', 'var(--acc)');
+  showMsg('�쐵 �떎�떆 �떆�룄!', 'var(--acc)');
   selected = [];
   setTimeout(() => highlightSelected(), 310);
 }
@@ -914,7 +1114,7 @@ function updateHUD() {
   document.getElementById('score-val').textContent = score;
   document.getElementById('wave-val').textContent  = wave;
   document.getElementById('hp-val').textContent    = hp;
-  document.getElementById('combo-val').textContent = '×' + combo;
+  document.getElementById('combo-val').textContent = '횞' + combo;
   document.getElementById('target-num').textContent = target;
   best = Math.max(best, score);
   document.getElementById('best-val').textContent = best;
@@ -929,21 +1129,23 @@ let rafId = null;
 function startTimer() {
   timerDur = INFINITE_TIMER ? Infinity : Math.max(BASE_DUR - (wave - 1) * 800, 5000);
   timerStart = performance.now();
+  pauseElapsed = 0;
+  isPaused = false;
   if (rafId) cancelAnimationFrame(rafId);
   tick();
 }
 
 function tick() {
-  if (!gameActive) return;
+  if (!gameActive || isPaused) return;
   const now = performance.now();
-  const elapsed = now - timerStart;
+  const elapsed = pauseElapsed + (now - timerStart);
 
   if (INFINITE_TIMER) {
     document.getElementById('timer-bar').style.width = '100%';
     document.getElementById('wave-fill').style.height = '100%';
     document.getElementById('timer-bar').style.background = 'var(--acc4)';
     document.getElementById('wave-fill').style.background = 'var(--acc4)';
-    document.getElementById('timer-secs').textContent = '∞';
+    document.getElementById('timer-secs').textContent = '�닞';
     rafId = requestAnimationFrame(tick);
     return;
   }
@@ -972,7 +1174,7 @@ function pushWave() {
   combo = Math.max(combo - 1, 1);
   hintPath = null;
   if (wave % 3 === 0) { hintLeft = Math.min(hintLeft + 1, 5); }
-  showMsg(`⚠ 웨이브 ${wave}  HP -1`, 'var(--acc)');
+  showMsg(`�슑 �썾�씠釉� ${wave}  HP -1`, 'var(--acc)');
   shiftUp();
   addNewRow();
   target = genTarget(wave);
@@ -1010,11 +1212,39 @@ function endGame() {
   document.getElementById('gameover').classList.add('show');
 }
 
+function pauseGame() {
+  if (!gameActive || isPaused) return;
+  isPaused = true;
+  pauseElapsed += performance.now() - timerStart;
+  if (rafId) cancelAnimationFrame(rafId);
+  document.getElementById('pause-overlay').classList.add('show');
+  document.getElementById('btn-pause').classList.add('paused');
+  document.getElementById('btn-pause').textContent = '�뼳 �옱媛�';
+}
+
+function resumeGame() {
+  if (!isPaused) return;
+  isPaused = false;
+  timerStart = performance.now();
+  document.getElementById('pause-overlay').classList.remove('show');
+  document.getElementById('btn-pause').classList.remove('paused');
+  document.getElementById('btn-pause').textContent = '�뤈 �씪�떆�젙吏�';
+  tick();
+}
+
+function togglePause() {
+  if (!gameActive) return;
+  isPaused ? resumeGame() : pauseGame();
+}
+
 function restartGame() {
   score = 0; hp = 5; wave = 1; combo = 1; selected = []; isDragging = false;
-  hintLeft = 3; hintPath = null;
+  hintLeft = 3; hintPath = null; isPaused = false; pauseElapsed = 0;
   gameActive = true;
   document.getElementById('gameover').classList.remove('show');
+  document.getElementById('pause-overlay').classList.remove('show');
+  document.getElementById('btn-pause').classList.remove('paused');
+  document.getElementById('btn-pause').textContent = '�뤈 �씪�떆�젙吏�';
   target = genTarget(1);
   initGrid();
   updateHUD();
@@ -1032,7 +1262,7 @@ function applyTimerSec(sec) {
   BASE_DUR = sec * 1000;
   slider.value = Math.min(sec, 300);
   numInput.value = sec;
-  if (gameActive && !INFINITE_TIMER) {
+  if (gameActive && !INFINITE_TIMER && !isPaused) {
     timerStart = performance.now();
     timerDur = Math.max(BASE_DUR - (wave - 1) * 800, 5000);
   }
@@ -1105,22 +1335,235 @@ function collectFrom(r, c, path, out) {
 document.getElementById('btn-hint').addEventListener('click', () => {
   if (hintLeft <= 0 || !gameActive) return;
   const paths = collectAllPaths();
-  if (!paths.length) { showMsg('현재 풀 수 있는 경로가 없어요', 'var(--acc)'); return; }
+  if (!paths.length) { showMsg('�쁽�옱 ��� �닔 �엳�뒗 寃쎈줈媛� �뾾�뼱�슂', 'var(--acc)'); return; }
   const pick = paths[Math.floor(Math.random() * paths.length)];
   hintPath = pick;
   hintLeft--;
   updateHUD();
   renderGrid();
-  showMsg(`힌트: ${pick.map(t=>t.val).join(' ')} = ${target}`, 'var(--acc4)');
+  showMsg(`�엺�듃: ${pick.map(t=>t.val).join(' ')} = ${target}`, 'var(--acc4)');
   setTimeout(() => { hintPath = null; renderGrid(); }, 4000);
 });
 
-// EVENTS
+// ������ SOUND ENGINE ������������������������������������������������������������������������������������������������������������������������������
+const AC = new (window.AudioContext || window.webkitAudioContext)();
+
+// master gain node for volume control
+const masterGain = AC.createGain();
+masterGain.gain.value = 0.6;
+masterGain.connect(AC.destination);
+
+let isMuted = false;
+let volBeforeMute = 0.6;
+
+function resumeAC() { if (AC.state === 'suspended') AC.resume(); }
+document.addEventListener('mousedown', resumeAC, { once: false });
+document.addEventListener('touchstart', resumeAC, { once: false });
+
+// Volume controls
+const volSlider = document.getElementById('vol-slider');
+const volPct    = document.getElementById('vol-pct');
+const volIcon   = document.getElementById('vol-icon');
+
+volSlider.addEventListener('input', () => {
+  const v = parseInt(volSlider.value) / 100;
+  masterGain.gain.value = v;
+  isMuted = v === 0;
+  volPct.textContent = volSlider.value + '%';
+  volIcon.textContent = v === 0 ? '�윍�' : v < 0.4 ? '�윍�' : '�윍�';
+});
+
+volIcon.addEventListener('click', () => {
+  if (!isMuted) {
+    volBeforeMute = masterGain.gain.value;
+    masterGain.gain.value = 0;
+    volSlider.value = 0;
+    volPct.textContent = '0%';
+    volIcon.textContent = '�윍�';
+    isMuted = true;
+  } else {
+    const v = volBeforeMute || 0.6;
+    masterGain.gain.value = v;
+    volSlider.value = Math.round(v * 100);
+    volPct.textContent = Math.round(v * 100) + '%';
+    volIcon.textContent = v < 0.4 ? '�윍�' : '�윍�';
+    isMuted = false;
+  }
+});
+
+// Sparkly sine-wave bell tone
+function playTone({ freq = 880, type = 'sine', vol = 0.18, attack = 0.004, decay = 0.06, sustain = 0.4, release = 0.18, duration = 0.2, detune = 0 } = {}) {
+  const now = AC.currentTime;
+  const osc  = AC.createOscillator();
+  const gain = AC.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, now);
+  if (detune) osc.detune.setValueAtTime(detune, now);
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(vol, now + attack);
+  gain.gain.linearRampToValueAtTime(vol * sustain, now + attack + decay);
+  gain.gain.setValueAtTime(vol * sustain, now + duration - release);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now); osc.stop(now + duration + 0.02);
+}
+
+// tiny shimmer: 2 detuned sines
+function shimmer(freq, vol = 0.09, delay = 0) {
+  setTimeout(() => {
+    playTone({ freq, type: 'sine', vol, attack: 0.003, decay: 0.05, sustain: 0.3, release: 0.14, duration: 0.18 });
+    playTone({ freq: freq * 1.005, type: 'sine', vol: vol * 0.5, attack: 0.005, decay: 0.04, sustain: 0.2, release: 0.1, duration: 0.16, detune: 7 });
+  }, delay);
+}
+
+// �윃� pick ��� soft marimba-like tap
+function soundPick() {
+  shimmer(1047, 0.10);
+}
+
+// �윃� connect ��� ascending sparkle arpeggio
+const CONNECT_NOTES = [880, 988, 1109, 1245, 1397, 1568];
+function soundConnect() {
+  const f = CONNECT_NOTES[Math.min(selected.length - 1, CONNECT_NOTES.length - 1)];
+  shimmer(f, 0.08);
+}
+
+// �윃� success ��� ascending magical chime chord
+function soundSuccess(comboN) {
+  const scale = [523, 659, 784, 988, 1175];
+  const boost = 1 + (comboN - 1) * 0.015;
+  scale.forEach((f, i) => {
+    shimmer(f * boost, 0.13, i * 55);
+  });
+  // sparkle tail
+  setTimeout(() => shimmer(2093 * boost, 0.08), 320);
+  setTimeout(() => shimmer(2637 * boost, 0.06), 420);
+}
+
+// �윃� fail ��� soft descending "oops" 
+function soundFail() {
+  playTone({ freq: 494, type: 'sine', vol: 0.12, attack: 0.01, decay: 0.12, sustain: 0.2, release: 0.2, duration: 0.35 });
+  setTimeout(() => playTone({ freq: 370, type: 'sine', vol: 0.10, attack: 0.005, decay: 0.1, sustain: 0.15, release: 0.18, duration: 0.3 }), 120);
+}
+
+// �윃� wave alert ��� gentle descending chime
+function soundWave() {
+  [659, 554, 440, 370].forEach((f, i) => {
+    setTimeout(() => playTone({ freq: f, type: 'sine', vol: 0.11, attack: 0.01, decay: 0.1, sustain: 0.3, release: 0.2, duration: 0.28 }), i * 80);
+  });
+}
+
+// ������ SCREEN SHAKE ���������������������������������������������������������������������������������������������������������������������������������
+function screenShake(intensity = 5, duration = 300) {
+  const app = document.getElementById('app');
+  const start = performance.now();
+  function frame(now) {
+    const t = (now - start) / duration;
+    if (t >= 1) { app.style.transform = ''; return; }
+    const decay = 1 - t;
+    const dx = (Math.random() - 0.5) * intensity * 2 * decay;
+    const dy = (Math.random() - 0.5) * intensity * 2 * decay;
+    app.style.transform = `translate(${dx}px,${dy}px)`;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+// ������ PARTICLES ������������������������������������������������������������������������������������������������������������������������������������������
+const COLORS_BY_VAL = { 1:'#fce7f3',2:'#fce7f3',3:'#fce7f3',4:'#fce7f3',5:'#fce7f3',6:'#fce7f3',7:'#fce7f3',8:'#fce7f3',9:'#fce7f3' };
+const OP_COLORS = { '+':'#86efca', '-':'#f9a8d4', '횞':'#fde68a', '첨':'#d8b4fe' };
+
+function spawnParticles(el, color) {
+  const rect = el.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('div');
+    const angle = (Math.PI * 2 * i) / 10 + Math.random() * 0.5;
+    const dist = 28 + Math.random() * 30;
+    const size = 5 + Math.random() * 6;
+    p.style.cssText = `position:fixed;left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;
+      border-radius:50%;background:${color};pointer-events:none;z-index:999;
+      transform:translate(-50%,-50%);transition:all 0.45s cubic-bezier(.2,.8,.4,1);opacity:1;`;
+    document.body.appendChild(p);
+    requestAnimationFrame(() => {
+      p.style.left = (cx + Math.cos(angle) * dist) + 'px';
+      p.style.top  = (cy + Math.sin(angle) * dist) + 'px';
+      p.style.opacity = '0';
+      p.style.transform = 'translate(-50%,-50%) scale(0.2)';
+    });
+    setTimeout(() => p.remove(), 500);
+  }
+}
+
+// ������ OVERRIDE startDrag / continueDrag with sounds ���������������������������������
+const _origStartDrag = startDrag;
+startDrag = function(r, c) {
+  resumeAC();
+  const before = selected.length;
+  _origStartDrag(r, c);
+  if (selected.length > before || (selected.length === 1)) soundPick();
+};
+
+const _origContinueDrag = continueDrag;
+continueDrag = function(r, c) {
+  const before = selected.length;
+  _origContinueDrag(r, c);
+  if (selected.length > before) soundConnect();
+};
+
+// ������ OVERRIDE onSuccess / onFail with effects ���������������������������������������������
+const _origOnSuccess = onSuccess;
+onSuccess = function() {
+  soundSuccess(combo);
+  screenShake(combo > 3 ? 6 : 3, 250);
+  const OP_PARTICLE = { '+':'#4ade80', '-':'#f87171', '횞':'#60a5fa', '첨':'#fb923c' };
+  selected.forEach(t => {
+    const el = tileEl(t.row, t.col);
+    const color = t.type === 'num' ? '#f472b6' : (OP_PARTICLE[t.val] || '#facc15');
+    spawnParticles(el, color);
+  });
+  _origOnSuccess();
+};
+
+const _origOnFail = onFail;
+onFail = function() {
+  soundFail();
+  screenShake(8, 300);
+  _origOnFail();
+};
+
+// override pushWave sound
+const _origPushWave = pushWave;
+pushWave = function() {
+  soundWave();
+  _origPushWave();
+};
+// THEME TOGGLE
+let isLight = false;
+const btnTheme = document.getElementById('btn-theme');
+btnTheme.addEventListener('click', () => {
+  isLight = !isLight;
+  document.body.classList.toggle('light', isLight);
+  btnTheme.textContent = isLight ? '�윁� �떎�겕' : '���截� �씪�씠�듃';
+});
+
 document.addEventListener('mouseup', endDrag);
 document.getElementById('btn-clear').addEventListener('click', () => {
   selected = []; highlightSelected(); updateExpr();
 });
 document.getElementById('btn-restart').addEventListener('click', restartGame);
+document.getElementById('btn-pause').addEventListener('click', togglePause);
+document.getElementById('btn-resume').addEventListener('click', resumeGame);
+
+// �뒪�럹�씠�뒪諛붾줈 �씪�떆�젙吏�/�옱媛�
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
+    e.preventDefault();
+    togglePause();
+  }
+});
 
 // TOUCH
 const gridEl = document.getElementById('grid');
