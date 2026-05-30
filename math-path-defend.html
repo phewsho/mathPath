@@ -8,7 +8,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ������ DARK THEME (default) ��������������������������������������������������������������������������� */
+  /* ── DARK THEME (default) ───────────────────────── */
   :root {
     --bg0: #0d0d0d;
     --bg1: #141414;
@@ -36,7 +36,7 @@
     --go-bg1: rgba(10,10,10,0.97); --go-bg2: rgba(20,5,15,0.97);
   }
 
-  /* ������ LIGHT THEME ��������������������������������������������������������������������������������������������������������� */
+  /* ── LIGHT THEME ─────────────────────────────────── */
   body.light {
     --bg0: #f5f0ff;
     --bg1: #ede8f8;
@@ -285,12 +285,12 @@
     border-color: var(--num-bdr);
   }
 
-  /* operator tiles ��� each symbol its own vivid color */
+  /* operator tiles — each symbol its own vivid color */
   .tile.op { border-radius: 50%; font-size: 22px; }
   .tile.op[data-v="+"] { color: var(--op-plus-clr);  background: var(--op-plus-bg);  border-color: var(--op-plus-bdr); }
   .tile.op[data-v="-"] { color: var(--op-minus-clr); background: var(--op-minus-bg); border-color: var(--op-minus-bdr); }
-  .tile.op[data-v="횞"] { color: var(--op-mul-clr);   background: var(--op-mul-bg);   border-color: var(--op-mul-bdr); }
-  .tile.op[data-v="첨"] { color: var(--op-div-clr);   background: var(--op-div-bg);   border-color: var(--op-div-bdr); }
+  .tile.op[data-v="×"] { color: var(--op-mul-clr);   background: var(--op-mul-bg);   border-color: var(--op-mul-bdr); }
+  .tile.op[data-v="÷"] { color: var(--op-div-clr);   background: var(--op-div-bg);   border-color: var(--op-div-bdr); }
 
   .tile.wall {
     background: var(--wall-bg);
@@ -300,7 +300,7 @@
     border-radius: 8px;
     font-size: 18px;
   }
-  .tile.wall::after { content: '�쑆'; opacity: 0.35; }
+  .tile.wall::after { content: '✦'; opacity: 0.35; }
 
   .tile.num:hover:not(.wrong):not(.clear)  { transform: scale(1.09) translateY(-3px); filter: brightness(1.15); }
   .tile.op:hover:not(.wrong):not(.clear)   { transform: scale(1.12) rotate(20deg); filter: brightness(1.15); }
@@ -753,7 +753,7 @@
   <div id="header">
     <div id="title">MATH PATH<span>DEFEND</span></div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <button id="btn-theme">�윁� �떎�겕</button>
+      <button id="btn-theme">🌙 다크</button>
       <div class="stats-row">
         <div class="stat">
           <div class="stat-label">SCORE</div>
@@ -773,20 +773,20 @@
 
   <!-- VOLUME -->
   <div id="vol-row">
-    <span id="vol-icon" title="�쓬�냼嫄� �넗湲�">�윍�</span>
+    <span id="vol-icon" title="음소거 토글">🔊</span>
     <input type="range" id="vol-slider" min="0" max="100" value="60" step="1">
     <span id="vol-pct">60%</span>
   </div>
 
   <!-- SETTINGS -->
   <div id="settings-row">
-    <span id="settings-label">����씠癒�</span>
+    <span id="settings-label">타이머</span>
     <input type="range" id="timer-slider" min="5" max="300" value="15" step="1">
     <div id="timer-input-wrap">
       <input type="number" id="timer-num-input" min="5" value="15">
-      <span id="timer-unit">珥�</span>
+      <span id="timer-unit">초</span>
     </div>
-    <button id="inf-toggle" title="臾댁젣�븳 紐⑤뱶">�닞</button>
+    <button id="inf-toggle" title="무제한 모드">∞</button>
     <button class="preset-btn" data-sec="10">10s</button>
     <button class="preset-btn" data-sec="30">30s</button>
     <button class="preset-btn" data-sec="60">60s</button>
@@ -798,22 +798,22 @@
       <span id="target-tag">TARGET</span>
       <div id="target-num">?</div>
     </div>
-    <div id="target-hint">�닽�옄 �넂 �뿰�궛�옄 �넂 �닽�옄<br>�뱶�옒洹몃줈 �뿰寃고븯�꽭�슂</div>
+    <div id="target-hint">숫자 → 연산자 → 숫자<br>드래그로 연결하세요</div>
   </div>
 
   <!-- TIMER -->
   <div id="timer-wrapper">
     <div id="timer-bar-bg"><div id="timer-bar"></div></div>
     <div id="timer-row">
-      <span id="timer-label">�떎�쓬 �썾�씠釉뚭퉴吏�</span>
+      <span id="timer-label">다음 웨이브까지</span>
       <span id="timer-secs">15</span>
     </div>
   </div>
 
   <!-- EXPRESSION -->
   <div id="expr-bar">
-    <div id="expr-text">����씪�쓣 �뱶�옒洹명븯�꽭�슂...</div>
-    <div id="expr-result">���</div>
+    <div id="expr-text">타일을 드래그하세요...</div>
+    <div id="expr-result">—</div>
   </div>
 
   <!-- MESSAGE -->
@@ -825,7 +825,7 @@
     <div id="sidebar">
       <div class="side-card">
         <div class="sc-label">COMBO</div>
-        <div class="sc-val" id="combo-val">횞1</div>
+        <div class="sc-val" id="combo-val">×1</div>
       </div>
       <div class="side-card" id="wave-card">
         <div class="sc-label">WAVE</div>
@@ -835,20 +835,20 @@
         <div class="sc-label">BEST</div>
         <div class="sc-val" id="best-val" style="font-size:15px">0</div>
       </div>
-      <button id="btn-clear">珥덇린�솕</button>
-      <button id="btn-pause">�뤈 �씪�떆�젙吏�</button>
-      <button id="btn-hint">�엺�듃 <span id="hint-count">3</span></button>
+      <button id="btn-clear">초기화</button>
+      <button id="btn-pause">⏸ 일시정지</button>
+      <button id="btn-hint">힌트 <span id="hint-count">3</span></button>
     </div>
   </div>
 
-  <div id="hint">�닽�옄 ����씪怨� �뿰�궛�옄 ����씪�쓣 援먮��濡� �뿰寃� 쨌 3媛� �씠�긽</div>
+  <div id="hint">숫자 타일과 연산자 타일을 교대로 연결 · 3개 이상</div>
 </div>
 
 <!-- PAUSE -->
 <div id="pause-overlay">
   <div id="pause-title">PAUSED</div>
-  <div id="pause-sub">�씪�떆�젙吏��맖 쨌 �뒪�럹�씠�뒪諛� �삉�뒗 踰꾪듉�쑝濡� �옱媛�</div>
-  <button id="btn-resume">�뼳 �옱媛�</button>
+  <div id="pause-sub">일시정지됨 · 스페이스바 또는 버튼으로 재개</div>
+  <button id="btn-resume">▶ 재개</button>
 </div>
 
 <!-- GAME OVER -->
@@ -864,7 +864,7 @@
 
 <script>
 const GRID = 5;
-const OPS = ['+', '-', '횞', '첨'];
+const OPS = ['+', '-', '×', '÷'];
 const NUMS = [1,2,3,4,5,6,7,8,9,2,3,4,5,6];
 
 let grid = [], selected = [], isDragging = false;
@@ -949,7 +949,7 @@ function injectSolvable() {
   let a, b;
   if (op === '+') { a = rnd(1, Math.min(target-1, 9)); b = target - a; }
   else if (op === '-') { a = rnd(target+1, target+9); b = a - target; }
-  else if (op === '횞') {
+  else if (op === '×') {
     const divs = []; for (let i=1;i<=9;i++) if (target%i===0) divs.push(i);
     if (!divs.length) return;
     a = divs[rnd(0, divs.length-1)]; b = target / a;
@@ -972,8 +972,8 @@ function evalPath(path) {
     const n  = Number(path[i+1].val);
     if (op === '+') val += n;
     else if (op === '-') val -= n;
-    else if (op === '횞') val *= n;
-    else if (op === '첨') { if (n===0 || !Number.isInteger(val/n)) return null; val /= n; }
+    else if (op === '×') val *= n;
+    else if (op === '÷') { if (n===0 || !Number.isInteger(val/n)) return null; val /= n; }
     else return null;
   }
   return val;
@@ -1058,8 +1058,8 @@ function updateExpr() {
   const txt = document.getElementById('expr-text');
   const res = document.getElementById('expr-result');
   if (!selected.length) {
-    txt.textContent = '����씪�쓣 �뱶�옒洹명븯�꽭�슂...';
-    res.textContent = '���'; res.style.color = 'var(--txt3)'; return;
+    txt.textContent = '타일을 드래그하세요...';
+    res.textContent = '—'; res.style.color = 'var(--txt3)'; return;
   }
   txt.textContent = selected.map(t => t.val).join(' ');
   if (selected.length >= 3 && selected.length % 2 === 1) {
@@ -1069,7 +1069,7 @@ function updateExpr() {
       res.textContent = v;
       res.style.color = v === target ? 'var(--acc3)' : 'var(--acc2)';
     }
-  } else { res.textContent = '���'; res.style.color = 'var(--txt3)'; }
+  } else { res.textContent = '…'; res.style.color = 'var(--txt3)'; }
 }
 
 function onSuccess() {
@@ -1077,7 +1077,7 @@ function onSuccess() {
   score += pts;
   combo = Math.min(combo + 1, 8);
   hintPath = null;
-  showMsg(`�쐯 ${target} �셿�꽦!  +${pts}�젏  횞${combo}肄ㅻ낫`, 'var(--acc3)');
+  showMsg(`✓ ${target} 완성!  +${pts}점  ×${combo}콤보`, 'var(--acc3)');
   const clearing = [...selected];
   clearing.forEach(t => tileEl(t.row, t.col).classList.add('clear'));
   setTimeout(() => {
@@ -1097,7 +1097,7 @@ function onFail() {
     setTimeout(() => el.classList.remove('wrong'), 300);
   });
   combo = 1;
-  showMsg('�쐵 �떎�떆 �떆�룄!', 'var(--acc)');
+  showMsg('✗ 다시 시도!', 'var(--acc)');
   selected = [];
   setTimeout(() => highlightSelected(), 310);
 }
@@ -1114,7 +1114,7 @@ function updateHUD() {
   document.getElementById('score-val').textContent = score;
   document.getElementById('wave-val').textContent  = wave;
   document.getElementById('hp-val').textContent    = hp;
-  document.getElementById('combo-val').textContent = '횞' + combo;
+  document.getElementById('combo-val').textContent = '×' + combo;
   document.getElementById('target-num').textContent = target;
   best = Math.max(best, score);
   document.getElementById('best-val').textContent = best;
@@ -1145,7 +1145,7 @@ function tick() {
     document.getElementById('wave-fill').style.height = '100%';
     document.getElementById('timer-bar').style.background = 'var(--acc4)';
     document.getElementById('wave-fill').style.background = 'var(--acc4)';
-    document.getElementById('timer-secs').textContent = '�닞';
+    document.getElementById('timer-secs').textContent = '∞';
     rafId = requestAnimationFrame(tick);
     return;
   }
@@ -1174,7 +1174,7 @@ function pushWave() {
   combo = Math.max(combo - 1, 1);
   hintPath = null;
   if (wave % 3 === 0) { hintLeft = Math.min(hintLeft + 1, 5); }
-  showMsg(`�슑 �썾�씠釉� ${wave}  HP -1`, 'var(--acc)');
+  showMsg(`⚠ 웨이브 ${wave}  HP -1`, 'var(--acc)');
   shiftUp();
   addNewRow();
   target = genTarget(wave);
@@ -1219,7 +1219,7 @@ function pauseGame() {
   if (rafId) cancelAnimationFrame(rafId);
   document.getElementById('pause-overlay').classList.add('show');
   document.getElementById('btn-pause').classList.add('paused');
-  document.getElementById('btn-pause').textContent = '�뼳 �옱媛�';
+  document.getElementById('btn-pause').textContent = '▶ 재개';
 }
 
 function resumeGame() {
@@ -1228,7 +1228,7 @@ function resumeGame() {
   timerStart = performance.now();
   document.getElementById('pause-overlay').classList.remove('show');
   document.getElementById('btn-pause').classList.remove('paused');
-  document.getElementById('btn-pause').textContent = '�뤈 �씪�떆�젙吏�';
+  document.getElementById('btn-pause').textContent = '⏸ 일시정지';
   tick();
 }
 
@@ -1244,7 +1244,7 @@ function restartGame() {
   document.getElementById('gameover').classList.remove('show');
   document.getElementById('pause-overlay').classList.remove('show');
   document.getElementById('btn-pause').classList.remove('paused');
-  document.getElementById('btn-pause').textContent = '�뤈 �씪�떆�젙吏�';
+  document.getElementById('btn-pause').textContent = '⏸ 일시정지';
   target = genTarget(1);
   initGrid();
   updateHUD();
@@ -1335,17 +1335,17 @@ function collectFrom(r, c, path, out) {
 document.getElementById('btn-hint').addEventListener('click', () => {
   if (hintLeft <= 0 || !gameActive) return;
   const paths = collectAllPaths();
-  if (!paths.length) { showMsg('�쁽�옱 ��� �닔 �엳�뒗 寃쎈줈媛� �뾾�뼱�슂', 'var(--acc)'); return; }
+  if (!paths.length) { showMsg('현재 풀 수 있는 경로가 없어요', 'var(--acc)'); return; }
   const pick = paths[Math.floor(Math.random() * paths.length)];
   hintPath = pick;
   hintLeft--;
   updateHUD();
   renderGrid();
-  showMsg(`�엺�듃: ${pick.map(t=>t.val).join(' ')} = ${target}`, 'var(--acc4)');
+  showMsg(`힌트: ${pick.map(t=>t.val).join(' ')} = ${target}`, 'var(--acc4)');
   setTimeout(() => { hintPath = null; renderGrid(); }, 4000);
 });
 
-// ������ SOUND ENGINE ������������������������������������������������������������������������������������������������������������������������������
+// ── SOUND ENGINE ──────────────────────────────────────────
 const AC = new (window.AudioContext || window.webkitAudioContext)();
 
 // master gain node for volume control
@@ -1370,7 +1370,7 @@ volSlider.addEventListener('input', () => {
   masterGain.gain.value = v;
   isMuted = v === 0;
   volPct.textContent = volSlider.value + '%';
-  volIcon.textContent = v === 0 ? '�윍�' : v < 0.4 ? '�윍�' : '�윍�';
+  volIcon.textContent = v === 0 ? '🔇' : v < 0.4 ? '🔉' : '🔊';
 });
 
 volIcon.addEventListener('click', () => {
@@ -1379,14 +1379,14 @@ volIcon.addEventListener('click', () => {
     masterGain.gain.value = 0;
     volSlider.value = 0;
     volPct.textContent = '0%';
-    volIcon.textContent = '�윍�';
+    volIcon.textContent = '🔇';
     isMuted = true;
   } else {
     const v = volBeforeMute || 0.6;
     masterGain.gain.value = v;
     volSlider.value = Math.round(v * 100);
     volPct.textContent = Math.round(v * 100) + '%';
-    volIcon.textContent = v < 0.4 ? '�윍�' : '�윍�';
+    volIcon.textContent = v < 0.4 ? '🔉' : '🔊';
     isMuted = false;
   }
 });
@@ -1417,19 +1417,19 @@ function shimmer(freq, vol = 0.09, delay = 0) {
   }, delay);
 }
 
-// �윃� pick ��� soft marimba-like tap
+// 🎵 pick — soft marimba-like tap
 function soundPick() {
   shimmer(1047, 0.10);
 }
 
-// �윃� connect ��� ascending sparkle arpeggio
+// 🎵 connect — ascending sparkle arpeggio
 const CONNECT_NOTES = [880, 988, 1109, 1245, 1397, 1568];
 function soundConnect() {
   const f = CONNECT_NOTES[Math.min(selected.length - 1, CONNECT_NOTES.length - 1)];
   shimmer(f, 0.08);
 }
 
-// �윃� success ��� ascending magical chime chord
+// 🎵 success — ascending magical chime chord
 function soundSuccess(comboN) {
   const scale = [523, 659, 784, 988, 1175];
   const boost = 1 + (comboN - 1) * 0.015;
@@ -1441,20 +1441,20 @@ function soundSuccess(comboN) {
   setTimeout(() => shimmer(2637 * boost, 0.06), 420);
 }
 
-// �윃� fail ��� soft descending "oops" 
+// 🎵 fail — soft descending "oops" 
 function soundFail() {
   playTone({ freq: 494, type: 'sine', vol: 0.12, attack: 0.01, decay: 0.12, sustain: 0.2, release: 0.2, duration: 0.35 });
   setTimeout(() => playTone({ freq: 370, type: 'sine', vol: 0.10, attack: 0.005, decay: 0.1, sustain: 0.15, release: 0.18, duration: 0.3 }), 120);
 }
 
-// �윃� wave alert ��� gentle descending chime
+// 🎵 wave alert — gentle descending chime
 function soundWave() {
   [659, 554, 440, 370].forEach((f, i) => {
     setTimeout(() => playTone({ freq: f, type: 'sine', vol: 0.11, attack: 0.01, decay: 0.1, sustain: 0.3, release: 0.2, duration: 0.28 }), i * 80);
   });
 }
 
-// ������ SCREEN SHAKE ���������������������������������������������������������������������������������������������������������������������������������
+// ── SCREEN SHAKE ───────────────────────────────────────────
 function screenShake(intensity = 5, duration = 300) {
   const app = document.getElementById('app');
   const start = performance.now();
@@ -1470,9 +1470,9 @@ function screenShake(intensity = 5, duration = 300) {
   requestAnimationFrame(frame);
 }
 
-// ������ PARTICLES ������������������������������������������������������������������������������������������������������������������������������������������
+// ── PARTICLES ──────────────────────────────────────────────
 const COLORS_BY_VAL = { 1:'#fce7f3',2:'#fce7f3',3:'#fce7f3',4:'#fce7f3',5:'#fce7f3',6:'#fce7f3',7:'#fce7f3',8:'#fce7f3',9:'#fce7f3' };
-const OP_COLORS = { '+':'#86efca', '-':'#f9a8d4', '횞':'#fde68a', '첨':'#d8b4fe' };
+const OP_COLORS = { '+':'#86efca', '-':'#f9a8d4', '×':'#fde68a', '÷':'#d8b4fe' };
 
 function spawnParticles(el, color) {
   const rect = el.getBoundingClientRect();
@@ -1497,7 +1497,7 @@ function spawnParticles(el, color) {
   }
 }
 
-// ������ OVERRIDE startDrag / continueDrag with sounds ���������������������������������
+// ── OVERRIDE startDrag / continueDrag with sounds ───────────
 const _origStartDrag = startDrag;
 startDrag = function(r, c) {
   resumeAC();
@@ -1513,12 +1513,12 @@ continueDrag = function(r, c) {
   if (selected.length > before) soundConnect();
 };
 
-// ������ OVERRIDE onSuccess / onFail with effects ���������������������������������������������
+// ── OVERRIDE onSuccess / onFail with effects ───────────────
 const _origOnSuccess = onSuccess;
 onSuccess = function() {
   soundSuccess(combo);
   screenShake(combo > 3 ? 6 : 3, 250);
-  const OP_PARTICLE = { '+':'#4ade80', '-':'#f87171', '횞':'#60a5fa', '첨':'#fb923c' };
+  const OP_PARTICLE = { '+':'#4ade80', '-':'#f87171', '×':'#60a5fa', '÷':'#fb923c' };
   selected.forEach(t => {
     const el = tileEl(t.row, t.col);
     const color = t.type === 'num' ? '#f472b6' : (OP_PARTICLE[t.val] || '#facc15');
@@ -1546,7 +1546,7 @@ const btnTheme = document.getElementById('btn-theme');
 btnTheme.addEventListener('click', () => {
   isLight = !isLight;
   document.body.classList.toggle('light', isLight);
-  btnTheme.textContent = isLight ? '�윁� �떎�겕' : '���截� �씪�씠�듃';
+  btnTheme.textContent = isLight ? '🌙 다크' : '☀️ 라이트';
 });
 
 document.addEventListener('mouseup', endDrag);
@@ -1557,7 +1557,7 @@ document.getElementById('btn-restart').addEventListener('click', restartGame);
 document.getElementById('btn-pause').addEventListener('click', togglePause);
 document.getElementById('btn-resume').addEventListener('click', resumeGame);
 
-// �뒪�럹�씠�뒪諛붾줈 �씪�떆�젙吏�/�옱媛�
+// 스페이스바로 일시정지/재개
 document.addEventListener('keydown', e => {
   if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
     e.preventDefault();
