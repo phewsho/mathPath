@@ -191,7 +191,7 @@ body{display:flex;align-items:flex-start;justify-content:center;padding:16px 12p
 #hint-info{font-size:13px;font-weight:700;color:var(--txt3);text-align:center;margin-top:2px;}
 #bottom-hint{font-size:14px;font-weight:600;color:var(--txt3);text-align:center;margin-top:8px;margin-bottom:16px;letter-spacing:.5px;line-height:1.6;}
 #penalty-badge{font-size:14px;font-weight:700;color:#f87171;text-align:center;min-height:15px;margin-top:2px;letter-spacing:1px;}
-#pause-overlay{display:none;position:fixed;inset:0;background:rgba(8,11,20,.93);flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:50;}
+#pause-overlay{display:none;position:fixed;inset:0;background:rgba(4,5,12,.96);flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:50;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
 #pause-overlay.show{display:flex;}
 #pause-title{font-family:'Orbitron',sans-serif;font-size:30px;font-weight:900;color:var(--acc2);letter-spacing:6px;}
 #pause-sub{font-size:10px;color:var(--txt3);letter-spacing:3px;}
@@ -644,17 +644,19 @@ function ensureSolvable(){
 
 function checkAndAutoReset(){
   if(tryFindPath()) return;
-  // no solution exists — auto reset grid with flash
-  showMsg('🔄 가능한 조합 없음 — 자동 초기화!','var(--acc2)');
+  showMsg('🔄 경우의 수 없음 — 보드 새로고침','var(--acc2)');
   soundAutoReset();
   for(let r=0;r<GRID;r++)for(let c=0;c<GRID;c++){
     const el=tileEl(r,c);
     if(el) el.classList.add('auto-reset');
   }
   setTimeout(()=>{
-    initGrid();
     selected=[];hintPath=null;
-    renderGrid();drawTube();
+    initGrid();
+    target=genTarget();
+    ensureSolvable();
+    updateHUD();
+    renderGrid();
   },900);
 }
 
